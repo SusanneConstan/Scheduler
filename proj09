@@ -1,0 +1,108 @@
+//Susanne Constantakis
+//Computer Project #9
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+#include <queue>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+//Global Variables
+
+int numTicks; //This will not change
+
+struct processControl{
+    int process_id;
+    int priority;
+    int isReady;
+    int isRunning;
+    int isBlocked;
+    int Exit;
+    int isNew;
+
+};
+
+std::string process_line(std::string string)
+{
+    processControl process;
+    
+    std::string delimiter = " ";
+    std::istringstream iss(string);
+    std::vector<int> temp;
+    int n;
+    
+    while ( iss >> n)
+    {
+        temp.push_back( n );
+    }
+    size_t pos = 0;
+    std::string token;
+    
+    for(int i = 0; i < temp.size(); i++)
+    {
+        std::cout<<temp[i]<<std::endl;
+    }
+    //Summary of Information for Testing
+    std::cout<< "PROCESS ID: "      << temp[0]<<std::endl;
+    std::cout<< "Priority: "        << temp[1]<<std::endl;
+    std::cout<< "Num CPU Bursts: "  << temp[2]<<std::endl;
+    std::cout<< "Burst Time: "      << temp[3]<<std::endl;
+    std::cout<< "Blocked Time: "    << temp[4]<<std::endl;
+    std::cout<< "Arrival Time: "    << temp[5]<<std::endl;
+    
+    return string;
+}
+
+int main( int argc, char *argv[] ) {
+    //The file is invalid -->
+    if (argc != 2) {
+        fprintf( stderr, "usage: %s <input file> \n", argv[0] );
+        exit( 1 );
+    }
+    
+    //If the file is valid, we process -->
+    else
+    {
+        std::string in;
+        std::ifstream inputfile (argv[1]);
+        std::vector<std::string> sysConfig;
+        
+        std::string parameters;
+        
+        int line_cnt;
+        int process_id, priority, number_bursts, burst_time, blocked_time, arrival_time;
+        
+        while (getline(inputfile,in)) // read line by line and add to vector
+        {
+            sysConfig.push_back(in);
+            //process_line(in);
+        }
+        
+        numTicks = std::stoi(sysConfig[0]);
+        
+        for(int i = 2; i < sysConfig.size(); i++)
+        {
+            parameters = sysConfig[i];
+            process_line(parameters);
+            //std::cout<<sysConfig[i]<<std::endl;
+        }
+        int tempArray[5];
+        
+        inputfile.close();
+        
+        if (sysConfig[1] == "FCFS") //algorithm chosen on second line of file
+        {
+            std::cout<<"You chose first come first serve"<<std::endl;
+        }
+        
+        else{std::cout<<"Please make sure the file includes a valid algorithm";}
+        
+    }
+    
+    
+   
+}
+
